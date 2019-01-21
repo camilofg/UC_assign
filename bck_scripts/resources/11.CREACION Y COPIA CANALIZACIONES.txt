@@ -1,0 +1,44 @@
+CREATE TABLE public.canalizaciones
+(
+"IdSolicitud" INTEGER,
+"Movimiento" CHARACTER VARYING(2000),
+"Unidad_Responsable" CHARACTER VARYING(2000),
+"Persona_Responsable" CHARACTER VARYING(2000),
+"Descargo/PES//Incidencia" CHARACTER VARYING(2000),
+"Fecha_Inicial_Programada" CHARACTER VARYING(2000),
+"Fecha_Final_Programada" CHARACTER VARYING(2000),
+"Reviso" CHARACTER VARYING(2000),
+"Aprobo" CHARACTER VARYING(2000),
+"Cuadrilla" CHARACTER VARYING(2000),
+"Codigo_Almacen" CHARACTER VARYING(2000),
+"Empresa_Colaboradora" CHARACTER VARYING(2000),
+"GOM" CHARACTER VARYING(2000),
+"Proyecto" CHARACTER VARYING(2000),
+"Orden_presupuestal" CHARACTER VARYING(2000),
+"Fecha_Inicial_Ejecutada" CHARACTER VARYING(2000),
+"Fecha_Final_Ejecutada" CHARACTER VARYING(2000),
+"Punto_Fisico_Inicial" CHARACTER VARYING(2000),
+"Punto_Fisico_Final" CHARACTER VARYING(2000),
+"Longitud" CHARACTER VARYING(2000),
+"Tipo_Cable" CHARACTER VARYING(2000),
+"Emplazamiento_Tipo_Zona" CHARACTER VARYING(2000),
+"Numero_Ductos" CHARACTER VARYING(2000),
+"Material" CHARACTER VARYING(2000),
+"Diametro" CHARACTER VARYING(2000),
+"Mantenimiento" CHARACTER VARYING(2000),
+"Propietario" CHARACTER VARYING(2000),
+"Ductos_Libres" CHARACTER VARYING(2000),
+"Ejecucion" CHARACTER VARYING(2000),
+"Fecha" CHARACTER VARYING(2000),
+"Usuario" CHARACTER VARYING(2000),
+"IdElemento" INTEGER
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.canalizaciones
+  OWNER TO postgres;
+
+COPY public.canalizaciones
+FROM '{}9.Canalizaciones.csv' 
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

@@ -1,0 +1,126 @@
+CREATE TABLE public.delta
+(
+  "MARCA" character varying(200),
+  "ESTADO" character varying(200),
+  "ESTADO_DELTA" character varying(200),
+  "ID_CARTO_ACT" character varying(200),
+  "SECTOR_ACT" character varying(200),
+  "ARCO_ACT" character varying(200),
+  "CTO_COD_ACT" character varying(200),
+  "UC_097_ACT" character varying(200),
+  "UC_019_ACT" character varying(200),
+  "COMPARTE_ACT" character varying(200),
+  "CONDUCTOR_ACT" character varying(200),
+  "MATERIAL_ACT" character varying(200),
+  "TIPO_TR_ACT" character varying(200),
+  "ZONA_ACT" character varying(200),
+  "PROPIETARIO_ACT" character varying(200),
+  "LON_SDE_ACT" character varying(200),
+  "PARQUE_ACT" character varying(200),
+  "LON_CALC_ACT" character varying(200),
+  "TRM_TIP_I_ACT" character varying(200),
+  "TRM_NOM_I_ACT" character varying(200),
+  "NODO_I_ACT" character varying(200),
+  "INFR_I_ACT" character varying(200),
+  "COORX_I_ACT" character varying(200),
+  "COORX_F_ACT" character varying(200),
+  "TRM_TIP_F_ACT" character varying(200),
+  "TRM_NOM_F_ACT" character varying(200),
+  "NODO_F_ACT" character varying(200),
+  "INFR_F_ACT" character varying(200),
+  "COORY_I_ACT" character varying(200),
+  "COORY_F_ACT" character varying(200),
+  "FECHA_ACT" character varying(200),
+  "ID_CARTO_ANT" character varying(200),
+  "SECTOR_ANT" character varying(200),
+  "ARCO_ANT" character varying(200),
+  "CTO_COD_ANT" character varying(200),
+  "UC_097_ANT" character varying(200),
+  "UC_019_ANT" character varying(200),
+  "COMPARTE_ANT" character varying(200),
+  "CONDUCTOR_ANT" character varying(200),
+  "MATERIAL_ANT" character varying(200),
+  "TIPO_TR_ANT" character varying(200),
+  "ZONA_ANT" character varying(200),
+  "PROPIETARIO_ANT" character varying(200),
+  "LON_SDE_ANT" character varying(200),
+  "PARQUE_ANT" character varying(200),
+  "LON_CALC_ANT" character varying(200),
+  "TRM_TIP_I_ANT" character varying(200),
+  "TRM_NOM_I_ANT" character varying(200),
+  "NODO_I_ANT" character varying(200),
+  "INFR_I_ANT" character varying(200),
+  "COORX_I_ANT" character varying(200),
+  "COORX_F_ANT" character varying(200),
+  "TRM_TIP_F_ANT" character varying(200),
+  "TRM_NOM_F_ANT" character varying(200),
+  "NODO_F_ANT" character varying(200),
+  "INFR_F_ANT" character varying(200),
+  "COORY_I_ANT" character varying(200),
+  "COORY_F_ANT" character varying(200),
+  "FECHA_ANT" character varying(200),
+  "CAMBIO_CTO_COD" character varying(200),
+  "CAMBIO_CONDUCTOR" character varying(200),
+  "CAMBIO_MATERIAL" character varying(200),
+  "CAMBIO_TIPO_TR" character varying(200),
+  "CAMBIO_ZONA" character varying(200),
+  "CAMBIO_LON" character varying(200),
+  "CAMBIO_INFR_I" character varying(200),
+  "CAMBIO_INFR_F" character varying(200),
+  "CAMBIO_NODO_I" character varying(200),
+  "CAMBIO_NODO_F" character varying(200)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.delta
+  OWNER TO postgres;
+
+-- Index: public.ind_delta_01
+
+-- DROP INDEX public.ind_delta_01;
+
+CREATE INDEX ind_delta_01
+  ON public.delta
+  USING btree
+  ("INFR_I_ACT" COLLATE pg_catalog."default");
+
+-- Index: public.ind_delta_02
+
+-- DROP INDEX public.ind_delta_02;
+
+CREATE INDEX ind_delta_02
+  ON public.delta
+  USING btree
+  ("INFR_F_ACT" COLLATE pg_catalog."default");
+
+-- Index: public.ind_delta_03
+
+-- DROP INDEX public.ind_delta_03;
+
+CREATE INDEX ind_delta_03
+  ON public.delta
+  USING btree
+  ("CTO_COD_ACT" COLLATE pg_catalog."default");
+
+-- Index: public.ind_delta_04
+
+-- DROP INDEX public.ind_delta_04;
+
+CREATE INDEX ind_delta_04
+  ON public.delta
+  USING btree
+  ("CTO_COD_ACT" COLLATE pg_catalog."default", "INFR_I_ACT" COLLATE pg_catalog."default");
+
+-- Index: public.ind_delta_05
+
+-- DROP INDEX public.ind_delta_05;
+
+CREATE INDEX ind_delta_05
+  ON public.delta
+  USING btree
+  ("CTO_COD_ACT" COLLATE pg_catalog."default", "INFR_F_ACT" COLLATE pg_catalog."default");
+
+COPY DELTA
+FROM '{}8.Delta_20180101vs20181022.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

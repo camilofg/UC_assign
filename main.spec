@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\camus\\PycharmProjects\\ajuste_tramos'],
+             pathex=['C:\\Users\\camus\\OneDrive\\Documentos\\repos\\UC_assign'],
              binaries=[],
              datas=[],
              hiddenimports=[],

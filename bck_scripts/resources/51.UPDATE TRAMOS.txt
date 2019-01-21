@@ -1,0 +1,165 @@
+UPDATE TRAMOS T2 SET "CTO_COD" = TC."alias" 
+FROM (( SELECT S."Circuito", T."IdElemento", C."alias" 
+FROM TRAMOS T INNER JOIN SOLICITUDES S ON T."IdSolicitud" = S."IdSolicitud" 
+INNER JOIN CIRCUITOS C ON S."Circuito" = C."linea" )) AS TC 
+WHERE T2."IdElemento" = TC."IdElemento"; 
+
+UPDATE TRAMOS T2 SET "CTO_COD" = TC."alias" 
+FROM(( SELECT S."Circuito", T."IdElemento", C."alias" FROM TRAMOS T 
+INNER JOIN SOLICITUDES S ON T."IdSolicitud" = S."IdSolicitud" 
+INNER JOIN CIRCUITOS C ON C."linea" LIKE '%'|| S."Circuito"|| '%' )) AS TC 
+WHERE T2."IdElemento" = TC."IdElemento";
+
+UPDATE TRAMOS T2
+SET "CTO_COD" = TC2.ALIAS
+FROM ((
+SELECT TC.*, alias 
+from ((
+SELECT S."Circuito", T."IdElemento"
+FROM TRAMOS T INNER JOIN SOLICITUDES S ON S."IdSolicitud" = T."IdSolicitud" WHERE "CTO_COD" IS NULL
+)) AS TC INNER JOIN CIRCUITOS C ON TC."Circuito" = C.linea
+)) AS TC2 WHERE TC2."IdElemento" = T2."IdElemento";
+
+UPDATE TRAMOS T
+SET "NEW_NIVEL_TENSION" = CASE WHEN "NEW_TENSION" < 16 THEN 15 ELSE 34 END
+FROM ((
+select CAST(regexp_replace(regexp_replace(regexp_replace("Nivel_Tension", ' ', ''), ',', '.'), 'kv', '', 'ig') AS NUMERIC) "NEW_TENSION", "IdElemento"
+from tramos where "Nivel_Tension" like '%K%' or "Nivel_Tension" like '%k%'
+)) AS TC
+WHERE TC."IdElemento" = T."IdElemento";
+
+UPDATE TRAMOS T
+SET "NEW_NIVEL_TENSION" = 15
+WHERE "Nivel_Tension" = '13.2';
+
+UPDATE TRAMOS
+SET "Instalacion" = UPPER("Instalacion");
+
+UPDATE TRAMOS
+SET "Instalacion" = 'SUBTERRANEO'
+WHERE "Instalacion" LIKE 'S%';
+ 
+UPDATE TRAMOS
+SET "Instalacion" = 'AEREO'
+WHERE "Instalacion" LIKE 'A%';
+
+UPDATE TRAMOS T2
+SET "Instalacion" = T2."Calibre", "Material" = T2."Tipo_Cable", "Tipo_Cable" = T2."Aislamiento"
+FROM ((
+select * from ((
+select * from tramos where "Instalacion" not LIKE 'S%'
+)) as tc where "Instalacion" not LIKE 'A%' --OR "Instalacion" not LIKE 'a%'; 
+)) TC2
+where TC2."IdElemento" = T2."IdElemento";
+
+update tramos T
+set "NEW_CALIBRE" = TC."NEW_CALIBRE_CALC"
+FROM ((
+select "Calibre",
+"IdElemento",
+SPLIT_PART(REGEXP_REPLACE(SPLIT_PART(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE("Calibre",' ',''), '3X', '', 'i'), 'MM\D*', 'mm2', 'i'), 'kcmil', ''), 'AWG', ''), ',',1), 'mm2.', 'mm2'), ' ', 1) "NEW_CALIBRE_CALC"
+from tramos
+)) AS TC
+WHERE TC."IdElemento" = T."IdElemento";
+
+update tramos t
+set "NEW_CALIBRE" = clean_value || 'mm2'
+from ((
+select distinct "IdElemento", "Calibre", "NEW_CALIBRE", array_to_string(regexp_matches("Calibre", '[[:digit:]]*'),'') clean_value
+from TRAMOS
+where "Calibre" like '%M%' and "NEW_CALIBRE" not like '%mm2%'
+)) as tc
+where tc."IdElemento" = t."IdElemento";
+
+UPDATE TRAMOS
+SET "Material" = UPPER("Material");
+
+UPDATE TRAMOS
+ SET "Material" = 'COBRE'
+ WHERE "Material" = 'CU';
+ 
+UPDATE TRAMOS
+ SET "Material" = 'ALUMINIO'
+ WHERE "Material" LIKE 'AA%' OR "Material" LIKE 'AL%' OR "Material" IN('ACSR', 'ASC');
+
+UPDATE TRAMOS
+SET "Aislamiento" = UPPER("Aislamiento");
+
+UPDATE TRAMOS
+SET "NEW_AISLAMIENTO" = UPPER("Aislamiento");
+
+UPDATE TRAMOS
+SET "NEW_AISLAMIENTO" = 'AISLADO'
+WHERE "NEW_AISLAMIENTO" = 'XLPE';
+
+UPDATE TRAMOS 
+SET "NEW_SEMIAISLADO" = 'N'
+WHERE "Aislamiento"  NOT like 'SEMI%';
+
+UPDATE TRAMOS 
+SET "NEW_SEMIAISLADO" = 'S'
+WHERE "Aislamiento"  like 'SEMI%';
+
+UPDATE TRAMOS
+SET "NEW_SEMIAISLADO" = 'N'
+WHERE "Aislamiento"  NOT LIKE 'SEMI%';
+
+UPDATE TRAMOS
+SET "Fases" = split_part("Fases", '.', 1);
+
+UPDATE TRAMOS
+SET "Longitud" = regexp_replace("Longitud", ',', '.');
+
+UPDATE TRAMOS T
+SET "Fases" = '3'
+FROM ((
+SELECT "IdElemento" FROM TRAMOS WHERE "Fases" IS NULL AND "Movimiento" = 'EXPANSION'
+)) AS TC where T."IdElemento" = TC."IdElemento";
+
+UPDATE TRAMOS
+SET "NEW_INFR_I" = LTRIM(RTRIM(REGEXP_REPLACE(REGEXP_REPLACE("INFR_I", 'PF', ''), ':', '')));
+
+UPDATE TRAMOS
+SET "NEW_INFR_F" = LTRIM(RTRIM(REGEXP_REPLACE(REGEXP_REPLACE("INFR_F", 'PF', ''), ':', '')));
+
+UPDATE TRAMOS
+SET "NEW_NEUTRO" = 'S'
+WHERE "Neutro" IS NOT NULL;
+
+UPDATE TRAMOS
+SET "NEW_NEUTRO" = 'N'
+WHERE "Neutro" IS NULL;
+
+UPDATE TRAMOS
+SET "NEW_TIPO_CABLE" = 'MONOPOLAR'
+WHERE "Tipo_Cable" IN('Monopolar', 'MONOPOLAR', 'monopolar');
+
+UPDATE TRAMOS
+SET "NEW_TIPO_CABLE" = 'TRIPOLAR'
+WHERE "Tipo_Cable" NOT IN('Monopolar', 'MONOPOLAR', 'monopolar');
+
+UPDATE TRAMOS T2
+SET "NEW_CALIBRE_MM2" = CAST(CLEAN_VALUE AS INTEGER) 
+from ((
+select "IdElemento", "NEW_CALIBRE", array_to_string(regexp_matches(regexp_replace("NEW_CALIBRE", 'mm2', ''), '[[:digit:]]*', 'g'), '') clean_value
+from TRAMOS
+WHERE "NEW_CALIBRE" LIKE '%mm2%'
+)) as tc 
+where clean_value <> '' AND T2."IdElemento" = TC."IdElemento";
+
+UPDATE TRAMOS T
+SET "NEW_ID_CALIBRE" = "ID"
+FROM ((
+SELECT "ID", "IdElemento"
+FROM TRAMOS T INNER JOIN CALIBRES_MM_AWG C ON "NEW_CALIBRE_MM2" BETWEEN MIN_MM2 AND MAX_MM2
+WHERE "NEW_CALIBRE_MM2" <> 0
+)) AS TC WHERE TC."IdElemento" = T."IdElemento";
+
+UPDATE TRAMOS T
+SET "NEW_ID_CALIBRE" = "ID"
+FROM ((
+SELECT "ID", "IdElemento", "NEW_ID_CALIBRE"
+FROM TRAMOS T INNER JOIN CALIBRES_MM_AWG C ON LTRIM(RTRIM(T."NEW_CALIBRE")) = LTRIM(RTRIM(C.awg_mcm))
+WHERE "NEW_ID_CALIBRE" IS NULL
+)) AS TC
+WHERE T."IdElemento" = TC."IdElemento";

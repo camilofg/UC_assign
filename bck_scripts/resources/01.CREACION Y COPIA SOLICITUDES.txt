@@ -1,0 +1,44 @@
+﻿CREATE TABLE public.solicitudes
+(
+  "IdSolicitud" integer,
+  "Descargo" character varying(200),
+  "Gom" character varying(2000),
+  "Proyecto" character varying(200),
+  "FSolicitud" character varying(200),
+  "Finicio" character varying(200),
+  "Ffin" character varying(200),
+  "Circuito" character varying(200),
+  "CD" character varying(200),
+  "Solicitante" character varying(200),
+  "Tipo" character varying(200),
+  "Estado" character varying(200),
+  "Observacion_estado" character varying(200),
+  "FCumpliment" character varying(200),
+  "CausaAnulacion" character varying(200),
+  "Observacion_cumplimentacion" character varying(200),
+  "EECC" character varying(200),
+  clientesafectados integer,
+  "Infraestructura" character varying(200),
+  "Archivo" character varying(2000),
+  "Usuario" character varying(200),
+  "Fecha_creacion" character varying(200),
+  "Zona" character varying(200),
+  "Fecha_estado" character varying(200),
+  "Corte_Suministro" character varying(200),
+  "Reanudación_Suministro" character varying(200),
+  "Extraccion_creg" character varying(200)
+)
+WITH (
+  OIDS=FALSE
+); 
+ALTER TABLE public.solicitudes 
+  OWNER TO postgres; 
+
+COPY solicitudes 
+--FROM 'C:\CF\Activos\NOV_16\solicitudes_latest.csv'
+FROM '{}1.Solicitudes.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';
+
+UPDATE SOLICITUDES 
+SET "Circuito" = LTRIM(RTRIM("Circuito")); 
+

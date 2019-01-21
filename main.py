@@ -7,7 +7,8 @@ if sys.argv[1] is not None:
     print(xml_config)
     try:
         test = atf.AdjustsTramosFile(xml_config)
-        test.start_clean_file()
+        test.load_access_tables()
+        test.execute_scripts()
     except Exception as err:
         print(err)
 

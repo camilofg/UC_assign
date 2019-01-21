@@ -1,0 +1,11 @@
+CREATE TABLE public.calibres_mm_awg
+(
+  "ID" integer,
+  min_mm2 numeric(10,2),
+  max_mm2 numeric(10,2),
+  awg_mcm character varying(10)
+);
+
+COPY calibres_mm_awg
+FROM '{}7.Calibres_mcm_awg.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

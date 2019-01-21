@@ -1,0 +1,23 @@
+UPDATE TRAMOS
+SET "GOM" = LTRIM(RTRIM(REGEXP_REPLACE("GOM", 'GOM', '', 'g')));
+
+UPDATE TRAMOS
+SET "GOM" = LTRIM(RTRIM(REGEXP_REPLACE("GOM", ' ', '-', 'g')));
+
+SELECT DISTINCT "IdElemento", unnest(string_to_array("GOM", '-')) "GOM" INTO public.break_goms FROM TRAMOS;
+
+UPDATE public.break_goms T4
+SET "GOM" = "GOM_ADJUSTED"
+FROM ((
+SELECT T3."IdElemento", T3."GOM",
+overlay(CAST("MAX_GOM" AS VARCHAR) PLACING T3."GOM" FROM (LENGTH(CAST("MAX_GOM" AS VARCHAR)) - 1) FOR LENGTH(CAST("MAX_GOM" AS VARCHAR))) "GOM_ADJUSTED"
+FROM ((
+SELECT T2."IdElemento", MAX(CAST(T2."GOM" AS NUMERIC)) "MAX_GOM"
+FROM ((
+SELECT distinct "IdElemento" from break_goms WHERE LENGTH("GOM") = 2
+)) AS TC INNER JOIN break_goms T2 ON TC."IdElemento" = T2."IdElemento"
+GROUP BY T2."IdElemento"
+)) AS TC2 INNER JOIN break_goms T3 ON TC2."IdElemento" = T3."IdElemento"
+WHERE CAST("MAX_GOM" AS VARCHAR) <> "GOM"
+)) TC3 WHERE TC3."IdElemento" = T4."IdElemento"
+AND T4."GOM" LIKE '%' || TC3."GOM" || '%';

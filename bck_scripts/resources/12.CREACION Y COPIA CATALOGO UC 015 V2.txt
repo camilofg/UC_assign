@@ -1,0 +1,22 @@
+CREATE TABLE public.Catalogo_uc_015_v2
+(
+"UC" CHARACTER VARYING(2000),
+"NT" INTEGER,
+"Tensión" INTEGER,
+"Tipo" CHARACTER VARYING(100),
+"Material" CHARACTER VARYING(50),
+"Aislamiento" CHARACTER VARYING(50),
+"Semiaislado" CHARACTER VARYING(1),
+"Calibre" CHARACTER VARYING(10),
+"Unidad_Calibre" CHARACTER VARYING(10)
+
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.Catalogo_uc_015_v2
+  OWNER TO postgres;
+
+COPY public.Catalogo_uc_015_v2
+FROM '{}10.Catalogo_uc_015_v2.csv' 
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

@@ -1,0 +1,53 @@
+-- Table: public.tramos_original
+
+-- DROP TABLE public.tramos_original;
+
+CREATE TABLE public.tramos_original
+(
+  "IdSolicitud" integer,
+  "Movimiento" character varying(200),
+  "Unidad_Responsable" character varying(200),
+  "Persona_Responsable" character varying(200),
+  "Descargo/PES//Incidencia" character varying(200),
+  "Fecha_Inicial_Programada" character varying(200),
+  "Fecha_Final_Programada" character varying(200),
+  "Reviso" character varying(200),
+  "Aprobo" character varying(200),
+  "Cuadrilla" character varying(200),
+  "Codigo_Almacen" character varying(200),
+  "Empresa_Colaboradora" character varying(200),
+  "GOM" character varying(2000),
+  "Proyecto" character varying(200),
+  "Orden_Presupuestal" character varying(200),
+  "Fecha_Inicial_Ejecutada" character varying(200),
+  "Fecha_Final_Ejecutada" character varying(200),
+  "INFR_I" character varying(200),
+  "INFR_F" character varying(200),
+  "Nivel_Tension" character varying(200),
+  "Instalacion" character varying(200),
+  "Calibre" character varying(200),
+  "Material" character varying(200),
+  "Tipo_Cable" character varying(200),
+  "Aislamiento" character varying(200),
+  "Longitud" character varying(200),
+  "Fases" character varying(200),
+  "Neutro" character varying(200),
+  "Contiene_Indicador_Falla" character varying(200),
+  "Numero_Ducto_Circuito" character varying(200),
+  "Mantenimiento" character varying(200),
+  "Propietario" character varying(200),
+  "Red_Sobrepuesta/Ducteria_Compartida" character varying(200),
+  "Ejecucion" character varying(200),
+  "Fecha" character varying(200),
+  "Usuario" character varying(200),
+  "IdElemento" integer
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.tramos_original
+  OWNER TO postgres;
+
+COPY public.tramos_original
+FROM '{}2.Tramos.csv' 
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

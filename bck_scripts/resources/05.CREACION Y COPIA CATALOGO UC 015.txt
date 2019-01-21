@@ -1,0 +1,18 @@
+CREATE TABLE public.catalogo_uc_015_mt
+(
+  "UC" character varying(20),
+  "NT" INTEGER,
+  "NIVEL_TENSION" INTEGER,
+  "UBICADO" character varying(50),
+  "MATERIAL" character varying(50),
+  "AISLAMIENTO"  character varying(50),
+  "SEMIAISLADO" character varying(1),
+  "CALIBRE" character varying(20),
+  "UNIDAD_CALIBRE" character varying(20),
+  "SAP" character varying(25),
+  "DESCRIPCION_SAP" character varying(2000)
+);
+
+COPY catalogo_uc_015_mt
+FROM '{}5.Catalogo_uc_015_mt.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

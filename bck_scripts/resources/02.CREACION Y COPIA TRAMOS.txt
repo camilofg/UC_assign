@@ -1,0 +1,137 @@
+CREATE TABLE public.tramos
+(
+  "IdSolicitud" integer,
+  "Movimiento" character varying(200),
+  "Unidad_Responsable" character varying(200),
+  "Persona_Responsable" character varying(200),
+  "Descargo/PES//Incidencia" character varying(200),
+  "Fecha_Inicial_Programada" character varying(200),
+  "Fecha_Final_Programada" character varying(200),
+  "Reviso" character varying(200),
+  "Aprobo" character varying(200),
+  "Cuadrilla" character varying(200),
+  "Codigo_Almacen" character varying(200),
+  "Empresa_Colaboradora" character varying(200),
+  "GOM" character varying(2000),
+  "Proyecto" character varying(200),
+  "Orden_Presupuestal" character varying(200),
+  "Fecha_Inicial_Ejecutada" character varying(200),
+  "Fecha_Final_Ejecutada" character varying(200),
+  "INFR_I" character varying(200),
+  "INFR_F" character varying(200),
+  "Nivel_Tension" character varying(200),
+  "Instalacion" character varying(200),
+  "Calibre" character varying(200),
+  "Material" character varying(200),
+  "Tipo_Cable" character varying(200),
+  "Aislamiento" character varying(200),
+  "Longitud" character varying(200),
+  "Fases" character varying(200),
+  "Neutro" character varying(200),
+  "Contiene_Indicador_Falla" character varying(200),
+  "Numero_Ducto_Circuito" character varying(200),
+  "Mantenimiento" character varying(200),
+  "Propietario" character varying(200),
+  "Red_Sobrepuesta/Ducteria_Compartida" character varying(200),
+  "Ejecucion" character varying(200),
+  "Fecha" character varying(200),
+  "Usuario" character varying(200),
+  "IdElemento" integer,
+  "CTO_COD" character varying(50),
+  "ZONA" character varying(15),
+  "NEW_SEMIAISLADO" character varying(1),
+  "NEW_AISLAMIENTO" character varying(25),
+  "NEW_NIVEL_TENSION" integer,
+  "UC_015" character varying(15),
+  "NEW_NEUTRO" character varying(1),
+  "UC_097" character varying(15),
+  "NEW_CALIBRE" character varying(15),
+  "NEW_TIPO_CABLE" character varying(50),
+  "ID_CALIBRE" integer,
+  "NEW_CALIBRE_MM2" integer DEFAULT 0,
+  "NEW_ID_CALIBRE" integer,
+  "NEW_INFR_F" character varying(150),
+  "NEW_INFR_I" character varying(150)
+) 
+WITH (
+  OIDS=FALSE
+); 
+ALTER TABLE public.tramos
+  OWNER TO postgres; 
+
+-- Index: public.ind_tramos_01
+
+-- DROP INDEX public.ind_tramos_01;
+
+CREATE INDEX ind_tramos_01
+  ON public.tramos
+  USING btree
+  ("IdSolicitud");
+
+-- Index: public.ind_tramos_02
+
+-- DROP INDEX public.ind_tramos_02;
+
+CREATE INDEX ind_tramos_02
+  ON public.tramos
+  USING btree
+  ("IdSolicitud", "INFR_I");
+
+-- Index: public.ind_tramos_03
+
+-- DROP INDEX public.ind_tramos_03;
+
+CREATE INDEX ind_tramos_03
+  ON public.tramos
+  USING btree
+  ("IdSolicitud", "INFR_F");
+
+-- Index: public.ind_tramos_04
+
+-- DROP INDEX public.ind_tramos_04;
+
+CREATE INDEX ind_tramos_04
+  ON public.tramos
+  USING btree
+  ("IdSolicitud", "CTO_COD");
+
+
+COPY TRAMOS("IdSolicitud",
+  "Movimiento",
+  "Unidad_Responsable",
+  "Persona_Responsable",
+  "Descargo/PES//Incidencia",
+  "Fecha_Inicial_Programada",
+  "Fecha_Final_Programada",
+  "Reviso",
+  "Aprobo",
+  "Cuadrilla",
+  "Codigo_Almacen",
+  "Empresa_Colaboradora",
+  "GOM",
+  "Proyecto",
+  "Orden_Presupuestal",
+  "Fecha_Inicial_Ejecutada",
+  "Fecha_Final_Ejecutada",
+  "INFR_I",
+  "INFR_F",
+  "Nivel_Tension",
+  "Instalacion",
+  "Calibre",
+  "Material",
+  "Tipo_Cable",
+  "Aislamiento",
+  "Longitud",
+  "Fases",
+  "Neutro",
+  "Contiene_Indicador_Falla",
+  "Numero_Ducto_Circuito",
+  "Mantenimiento",
+  "Propietario",
+  "Red_Sobrepuesta/Ducteria_Compartida",
+  "Ejecucion",
+  "Fecha",
+  "Usuario",
+  "IdElemento") 
+FROM '{}2.Tramos.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1' 

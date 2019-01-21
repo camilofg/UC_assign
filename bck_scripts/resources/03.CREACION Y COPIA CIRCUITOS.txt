@@ -1,0 +1,16 @@
+CREATE TABLE public.CIRCUITOS
+(
+  linea character varying(200),
+  alias character varying(20),
+  subestacion character varying(200),
+  tension_nominal integer
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.CIRCUITOS
+  OWNER TO postgres;
+
+COPY CIRCUITOS
+FROM '{}3.Circuitos.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1'

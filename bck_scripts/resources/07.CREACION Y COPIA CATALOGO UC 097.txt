@@ -1,0 +1,23 @@
+CREATE TABLE public.catalogo_uc_097_mt
+(
+  "ID" integer PRIMARY KEY,
+  "UC" character varying(5000),
+  "TIPO" character varying(5000),
+  "UBICADO" character varying(5000),
+  "NIVEL_TENSION" character varying(5000),
+  "MATERIAL" character varying(5000),
+  "FASES" character varying(5000),
+  "SEMIAISLADO" character varying(5000),
+  "ZONA" character varying(5000),
+  "NEUTRO" character varying(5000),
+  "LONG_PROM" character varying(5000),
+  "CALIBRE" character varying(15),
+  new_cond_long boolean,
+  "NEW_TIPO_CABLE" character varying(50),
+  "NEW_ID_CALIBRE" integer,
+  "NEW_CALIBRE_MM2" integer
+);
+
+COPY catalogo_uc_097_mt
+FROM '{}6.Catalogo_uc_097_mt.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1';

@@ -1,0 +1,12 @@
+CREATE TABLE public.apoyos_mun
+(
+  "NOMBRE" character varying(20),
+  "TIPO_APOYO" character varying(20),
+  "ID_APOYO" numeric(20,0),
+  "ID_CARTOGRAFICO" numeric(20,0),
+  "ZONA" character varying(20)
+);
+
+COPY APOYOS_MUN
+FROM '{}4.Apoyos_Mun.csv'
+WITH DELIMITER ';' CSV HEADER ENCODING 'LATIN1'

@@ -4,8 +4,9 @@ import os
 
 class Create_Script:
 
-    def __init__(self, file):
+    def __init__(self, file, schema):
         self.file = file
+        self.schema = schema
 
     def call_tables(self):
         filename, file_extension = os.path.splitext(self.file)
@@ -23,7 +24,7 @@ class Create_Script:
     def create_table(self, tab_name, df1):
         tab_name = tab_name.replace(" ", "_")
         data_type = " character varying(5000)"
-        str_query = "CREATE TABLE {}(".format(tab_name)
+        str_query = " CREATE TABLE IF NOT EXISTS {}{}(".format(self.schema, tab_name)
         prefix = ""
         columns = ""
         for col in df1.axes[1]:
@@ -53,12 +54,14 @@ class Create_Script:
                          ' "NEW_INFR_F" character varying(150), "NEW_INFR_I" character varying(150)'
         str_query += ");"
 
-        str_query += r" COPY {} ({}) FROM '{}' WITH DELIMITER '{}' CSV HEADER ENCODING 'LATIN1';".format(tab_name,
-                                                                                                         columns,
-                                                                                                         self.file, ';')
+        str_query += r" COPY {}{} ({}) FROM '{}' WITH DELIMITER '{}' CSV HEADER ENCODING 'LATIN1';".format(self.schema,
+                                                                                                            tab_name,
+                                                                                                            columns,
+                                                                                                            self.file,
+                                                                                                            ';')
         str_query += str_query_org.replace("TRAMOS", "TRAMOS_ORIGINAL")
         if tab_name == "TRAMOS":
-            str_query += r" COPY {} FROM '{}' WITH DELIMITER '{}' CSV HEADER ENCODING 'LATIN1';".format(
+            str_query += r" COPY {}{} FROM '{}' WITH DELIMITER '{}' CSV HEADER ENCODING 'LATIN1';".format(self.schema,
                 tab_name+"_ORIGINAL", self.file, ';')
         print(str_query)
         return str_query

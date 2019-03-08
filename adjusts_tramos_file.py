@@ -30,7 +30,7 @@ class AdjustsTramosFile:
             self.resources = soup.find("resource-path").next
             self.sources = soup.find("sources-path").next
             self.db_route = soup.find("db_route").next
-            self.db_schema = None if soup.find("db_schema") is None else soup.find("db_schema").next + '.'
+            self.db_schema = '' if soup.find("db_schema") is None else soup.find("db_schema").next + '.'
             self.db_created = False
 
     def load_access_tables(self):
